@@ -1,26 +1,14 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { act } from 'react';
-import { createRoot } from 'react-dom/client';
 import { Counter } from './counter.js';
+import { fireEvent, render } from '@testing-library/react';
 
 test('Should render count and increment it by click', () => {
-  // prepare
-  const container = document.createElement('div');
-  document.body.append(container);
+  const { getByTestId } = render(<Counter />);
 
-  act(() => {
-    createRoot(container).render(<Counter />);
-  });
-
-  const counter = container.querySelector('[data-testid="counter"]')!;
+  const counter = getByTestId('counter')!;
   assert.equal(counter.textContent, 'Count: 0');
 
-  act(() => {
-    counter.dispatchEvent(new MouseEvent('click'));
-  });
+  fireEvent.click(counter);
   assert.equal(counter.textContent, 'Count: 1');
-
-  // cleanup
-  container.remove();
 });

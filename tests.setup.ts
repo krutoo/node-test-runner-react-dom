@@ -1,7 +1,13 @@
-import 'global-jsdom/register';
+import { GlobalRegistrator } from '@happy-dom/global-registrator';
+import { afterEach } from 'node:test';
+import { cleanup } from '@testing-library/react';
 
-declare global {
-  var IS_REACT_ACT_ENVIRONMENT: boolean;
-}
+GlobalRegistrator.register({
+  url: 'http://localhost:3000',
+  width: 1920,
+  height: 1080,
+});
 
-globalThis.IS_REACT_ACT_ENVIRONMENT = true;
+afterEach(() => {
+  cleanup();
+});
